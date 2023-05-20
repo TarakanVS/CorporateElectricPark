@@ -1,3 +1,7 @@
+using Repository;
+using Services;
+using Microsoft.EntityFrameworkCore;
+
 namespace CorporateElectricPark
 {
     public class Program
@@ -12,7 +16,9 @@ namespace CorporateElectricPark
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-
+            builder.Services.AddEntityFrameworkNpgsql().AddDbContext<ElectricParkContext>(opt => opt.UseNpgsql(builder.Configuration.GetConnectionString("ElectricParkDb")));
+            builder.Services.RegisterRepos();
+            builder.Services.RegisterMediatR();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
