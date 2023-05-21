@@ -1,30 +1,29 @@
 ﻿using Domain.Models;
 using MediatR;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Services.Commands.CarCommands
 {
     public class CreateCarCommand : IRequest<Car>
     {
-        [MaxLength(250)]
-        [Required]
+        [MaxLength(250, ErrorMessage = "String too long!")]
+        [Required(ErrorMessage = "Field can't be empty")]
         public string NumberPlate { get; set; }
 
-        [MaxLength(250)]
-        [Required]
+        [MaxLength(250, ErrorMessage = "String too long!")]
+        [Required(ErrorMessage = "Field can't be empty")]
         public string Model { get; set; }
 
         [Range(0, 999)]
-        [Required]
+        [Required(ErrorMessage = "Field can't be empty")]
         public double Tariff { get; set; }
 
         [Range(0, 999)]
-        [Required]
+        [Required(ErrorMessage = "Field can't be empty")]
         public double Mileage { get; set; }
 
-        [MaxLength(250)]
-        [Required]
+        [MaxLength(250, ErrorMessage = "String too long!")]
+        [Required(ErrorMessage = "Field can't be empty")]
         public Guid CompanyId { get; set; }
     }
 }

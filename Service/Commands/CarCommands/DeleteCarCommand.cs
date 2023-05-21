@@ -6,7 +6,7 @@ namespace Services.Commands.CarCommands
 {
     public class DeleteCarCommand : IRequest<Car>
     {
-        [Required]
+        [Required(ErrorMessage = "Field can't be empty")]
         public Guid Id { get; set; }
     }
 }
