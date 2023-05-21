@@ -12,7 +12,7 @@ using Repository;
 namespace Repository.Migrations
 {
     [DbContext(typeof(ElectricParkContext))]
-    [Migration("20230520201500_Initial")]
+    [Migration("20230521193634_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -141,8 +141,8 @@ namespace Repository.Migrations
                         .HasColumnType("time without time zone")
                         .HasColumnName("duration");
 
-                    b.Property<float>("EnergySpent")
-                        .HasColumnType("real")
+                    b.Property<double>("EnergySpent")
+                        .HasColumnType("double precision")
                         .HasColumnName("energy_spent");
 
                     b.Property<DateTime>("FinishDateTime")
@@ -282,10 +282,6 @@ namespace Repository.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("text")
                         .HasColumnName("name");
-
-                    b.Property<string>("Password")
-                        .HasColumnType("text")
-                        .HasColumnName("password");
 
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("text")

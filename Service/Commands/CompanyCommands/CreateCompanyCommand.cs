@@ -6,6 +6,17 @@ namespace Services.Commands.CompanyCommands
 {
     public class CreateCompanyCommand : IRequest<Company>
     {
+        public CreateCompanyCommand(string? name, string? phoneNumber, double tariff, string? emailAddress, Guid companyOwnerId, double balance, double debt)
+        {
+            Name = name;
+            PhoneNumber = phoneNumber;
+            Tariff = tariff;
+            EmailAddress = emailAddress;
+            CompanyOwnerId = companyOwnerId;
+            Balance = balance;
+            Debt = debt;
+        }
+
         [MaxLength(250, ErrorMessage = "String too long!")]
         [Required(ErrorMessage = "Field can't be empty")]
         public string Name { get; set; }

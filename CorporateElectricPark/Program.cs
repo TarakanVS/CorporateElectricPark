@@ -1,6 +1,8 @@
 using Repository;
 using Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Domain.Models;
 
 namespace CorporateElectricPark
 {
@@ -10,15 +12,15 @@ namespace CorporateElectricPark
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
-
-            builder.Services.AddControllers();
+            // Add services to the container.;
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddEntityFrameworkNpgsql().AddDbContext<ElectricParkContext>(opt => opt.UseNpgsql(builder.Configuration.GetConnectionString("ElectricParkDb")));
             builder.Services.RegisterRepos();
-            builder.Services.RegisterMediatR();
+            builder.Services.AddMediatR();
+            builder.Services.AddControllers();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -31,7 +33,6 @@ namespace CorporateElectricPark
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 

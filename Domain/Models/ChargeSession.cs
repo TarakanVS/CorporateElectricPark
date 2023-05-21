@@ -6,25 +6,25 @@ namespace Domain.Models
     public class ChargeSession : BaseEntity
     {
         [Column("session_number")]
-        public string? SessionNumber { get; protected set; }
+        public string? SessionNumber { get; set; }
 
         [Column("energy_spent")]
-        public float EnergySpent { get; protected set; }
+        public double EnergySpent { get; set; }
 
         [Column("start_date_time")]
-        public DateTime StartDateTime { get; protected set; }
+        public DateTime StartDateTime { get; set; }
 
         [Column("finish_date_time")]
-        public DateTime FinishDateTime { get; protected set; }
+        public DateTime FinishDateTime { get; set; }
 
         [Column("duration")]
-        public TimeOnly Duration { get; protected set; }
+        public TimeOnly Duration { get; set; }
 
         [Column("cost")]
-        public double Cost { get; protected set; }
+        public double Cost { get; set; }
 
         [Column("debd")]
-        public double Debt { get; protected set; }
+        public double Debt { get; set; }
 
         [Column("driver_id")]
         public Guid DriverId { get; set; }

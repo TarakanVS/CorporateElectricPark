@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Repository
 {
-    internal class ElectricCarParkRepository <TEntity> : IRepository<TEntity> where TEntity : BaseEntity
+    public class ElectricCarParkRepository <TEntity> : IRepository<TEntity> where TEntity : BaseEntity
     {
         protected readonly ElectricParkContext _context;
         public ElectricCarParkRepository(ElectricParkContext context)

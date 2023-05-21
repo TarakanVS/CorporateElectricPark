@@ -5,7 +5,7 @@ namespace Repository
 {
     public class ElectricParkContext : DbContext
     {
-        public ElectricParkContext(DbContextOptions<ElectricParkContext> options) : base(options) { }
+        public ElectricParkContext(DbContextOptions<ElectricParkContext> options) : base(options) { AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true); }
 
         public virtual DbSet<Driver> Drivers { get; set; }
         public virtual DbSet<Company> Companies { get; set; }

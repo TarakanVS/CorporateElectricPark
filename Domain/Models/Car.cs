@@ -5,7 +5,6 @@ namespace Domain.Models
     [Table ("cars")]
     public class Car : BaseEntity
     {
-
         [Column("number_plate")]
         public string? NumberPlate { get; set; }
 

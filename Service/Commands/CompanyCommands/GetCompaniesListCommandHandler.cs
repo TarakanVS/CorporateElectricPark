@@ -1,12 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Domain.Models;
+using MediatR;
+using Repository;
 
 namespace Services.Commands.CompanyCommands
 {
-    internal class GetCompaniesListCommandHandler
+    public class GetCompaniesListCommandHandler : IRequestHandler<GetCompaniesListCommand, List<Company>>
     {
+        private readonly IRepository<Company> _repository;
+
+        public GetCompaniesListCommandHandler(IRepository<Company> repository)
+        {
+            _repository = repository;
+        }
+
+        public async Task<List<Company>> Handle(GetCompaniesListCommand command, CancellationToken cancellationToken)
+        {
+            var companiesList = await _repository.GetAllAsync();
+
+            return companiesList;
+        }
     }
 }

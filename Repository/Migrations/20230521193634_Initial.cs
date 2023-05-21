@@ -76,14 +76,13 @@ namespace Repository.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
+                    phone_number = table.Column<string>(type: "text", nullable: true),
+                    name = table.Column<string>(type: "text", nullable: true),
+                    email_address = table.Column<string>(type: "text", nullable: true),
                     company_id = table.Column<Guid>(type: "uuid", nullable: false),
                     car_id = table.Column<Guid>(type: "uuid", nullable: false),
                     update_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    added_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    password = table.Column<string>(type: "text", nullable: true),
-                    phone_number = table.Column<string>(type: "text", nullable: true),
-                    name = table.Column<string>(type: "text", nullable: true),
-                    email_address = table.Column<string>(type: "text", nullable: true)
+                    added_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -133,7 +132,7 @@ namespace Repository.Migrations
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
                     session_number = table.Column<string>(type: "text", nullable: true),
-                    energy_spent = table.Column<float>(type: "real", nullable: false),
+                    energy_spent = table.Column<double>(type: "double precision", nullable: false),
                     start_date_time = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     finish_date_time = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     duration = table.Column<TimeOnly>(type: "time without time zone", nullable: false),

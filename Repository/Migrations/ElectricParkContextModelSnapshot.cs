@@ -138,8 +138,8 @@ namespace Repository.Migrations
                         .HasColumnType("time without time zone")
                         .HasColumnName("duration");
 
-                    b.Property<float>("EnergySpent")
-                        .HasColumnType("real")
+                    b.Property<double>("EnergySpent")
+                        .HasColumnType("double precision")
                         .HasColumnName("energy_spent");
 
                     b.Property<DateTime>("FinishDateTime")
@@ -279,10 +279,6 @@ namespace Repository.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("text")
                         .HasColumnName("name");
-
-                    b.Property<string>("Password")
-                        .HasColumnType("text")
-                        .HasColumnName("password");
 
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("text")

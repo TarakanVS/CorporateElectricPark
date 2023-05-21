@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Domain.Models;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Repository
 {
-    internal class ServiceExtensions
+    public static class ServiceExtensions
     {
+        public static void RegisterRepos(this IServiceCollection collection)
+        {
+            collection.AddScoped(typeof(IRepository<>), typeof(ElectricCarParkRepository<>));
+        }
     }
 }

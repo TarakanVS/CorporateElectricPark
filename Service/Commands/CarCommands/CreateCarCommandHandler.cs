@@ -1,15 +1,14 @@
 ﻿using Domain.Models;
 using MediatR;
 using Repository;
-using Services.Commands.CarCommands;
 
-namespace Services.Handlers.CarHandlers
+namespace Services.Commands.CarCommands
 {
-    internal class CreateCarHandler : IRequestHandler<CreateCarCommand, Car>
+    public class CreateCarCommandHandler : IRequestHandler<CreateCarCommand, Car>
     {
         private readonly IRepository<Car> _repository;
 
-        public CreateCarHandler(IRepository<Car> repository)
+        public CreateCarCommandHandler(IRepository<Car> repository)
         {
             _repository = repository;
         }
@@ -22,7 +21,8 @@ namespace Services.Handlers.CarHandlers
                 Model = command.Model,
                 Tariff = command.Tariff,
                 Mileage = command.Mileage,
-                CompanyId = command.CompanyId
+                CompanyId = command.CompanyId,
+                DriverId = command.DriverId
             };
 
             return await _repository.InsertAsync(car);

@@ -38,6 +38,11 @@ namespace Services.Commands.CarCommands
                 car.CompanyId = command.CompanyId;
             }
 
+            if (command.DriverId != default)
+            {
+                car.DriverId = command.DriverId;
+            }
+
             return await _repository.UpdateAsync(car);
         }
     }

@@ -1,7 +1,6 @@
 ﻿using Domain.Models;
 using MediatR;
 using Repository;
-using Services.Commands.CompanyCommands;
 
 namespace Services.Commands.CompanyCommands
 {

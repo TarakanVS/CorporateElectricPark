@@ -22,6 +22,4 @@ namespace Services.Commands.CarCommands
             return await _repository.DeleteAsync(car.Id);
         }
     }
-    {
-    }
 }

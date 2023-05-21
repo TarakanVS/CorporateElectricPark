@@ -6,6 +6,16 @@ namespace Services.Commands.CarCommands
 {
     public class CreateCarCommand : IRequest<Car>
     {
+        public CreateCarCommand(string? numberPlate, string? model, double tariff, double mileage, Guid companyId, Guid driverId, Guid companyId1)
+        {
+            NumberPlate = numberPlate;
+            Model = model;
+            Tariff = tariff;
+            Mileage = mileage;
+            CompanyId = companyId;
+            DriverId = driverId;
+        }
+
         [MaxLength(250, ErrorMessage = "String too long!")]
         [Required(ErrorMessage = "Field can't be empty")]
         public string NumberPlate { get; set; }
@@ -22,8 +32,9 @@ namespace Services.Commands.CarCommands
         [Required(ErrorMessage = "Field can't be empty")]
         public double Mileage { get; set; }
 
-        [MaxLength(250, ErrorMessage = "String too long!")]
         [Required(ErrorMessage = "Field can't be empty")]
         public Guid CompanyId { get; set; }
+
+        public Guid DriverId { get; set; }
     }
 }
