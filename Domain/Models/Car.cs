@@ -23,11 +23,5 @@ namespace Domain.Models
 
         [Column("driver_id")]
         public Guid DriverId { get; set; }
-
-        public virtual Company Company { get; set; }
-
-        public virtual Driver Driver { get; set;}
-
-        public virtual ICollection<ChargeSession> ChargeSessions { get; set; }
     }
 }

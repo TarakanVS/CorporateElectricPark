@@ -10,6 +10,5 @@ namespace Domain.Models
     [Table("companies_owners")]
     public class CompanyOwner : User
     {
-        public virtual ICollection<Company> Companies { get; set; }
     }
 }

@@ -25,9 +25,5 @@ namespace Domain.Models
 
         [Column("company_owner_id")]
         public Guid CompanyOwnerId { get; set; }
-
-        public virtual CompanyOwner? CompanyOwner { get; set; }
-        public virtual ICollection<Driver>? Drivers { get; set; }
-        public virtual ICollection<Car>? Cars { get; set; }
     }
 }
