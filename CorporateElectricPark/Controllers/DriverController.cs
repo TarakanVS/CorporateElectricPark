@@ -1,7 +1,7 @@
 ﻿using Domain.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Services.Commands.DriverCommands;
+using Services.Stories.DriverStories;
 
 namespace CorporateElectricPark.Controllers
 {
@@ -16,52 +16,70 @@ namespace CorporateElectricPark.Controllers
         }
 
         [HttpGet]
-        public async Task<List<Driver>> GetDriversListAsync()
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<Driver>))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetList()
         {
-            var drivers = await _mediator.Send(new GetDriversListCommand());
+            var story = new GetDriversListStory();
 
-            return drivers;
+            var response = await _mediator.Send(story);
+
+            if (response.Count == 0)
+            {
+                return NotFound("Objects not found");
+            }
+
+            return Ok(response);
         }
 
-        [HttpGet("driverId")]
-        public async Task<Driver> GetDriverByIdAsync(Guid driverId)
+        [HttpGet("{Id:Guid}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Driver))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> Get([FromRoute] GetDriverByIdStory story)
         {
-            var driver = await _mediator.Send(new GetDriverByIdCommand() { Id = driverId });
+            var response = await _mediator.Send(story);
 
-            return driver;
+            if (response == null)
+            {
+                return NotFound("Object not found");
+            }
+
+            return Ok(response);
         }
 
         [HttpPost]
-        public async Task<Driver> DrivereateDriverAsync(Driver driver)
+        [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Post([FromBody] CreateDriverStory story)
         {
-            var newDriver = await _mediator.Send(new CreateDriverCommand(
-                driver.Name,
-                driver.PhoneNumber,
-                driver.EmailAddress,
-                driver.CarId,
-                driver.CompanyId));
+            var response = await _mediator.Send(story);
 
-            return newDriver;
+            return Ok(response);
         }
 
         [HttpPut]
-        public async Task<Driver> UpdateStudentAsync(Driver driver)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Put([FromBody] UpdateDriverStory story)
         {
-            var isDriverUpdated = await _mediator.Send(new UpdateDriverCommand(
-                driver.Id,
-                driver.Name,
-                driver.PhoneNumber,
-                driver.EmailAddress,
-                driver.CarId,
-                driver.CompanyId));
+            var response = await _mediator.Send(story);
 
-            return isDriverUpdated;
+            return Ok();
         }
 
-        [HttpDelete]
-        public async Task<Driver> DeleteDriverAsync(Guid id)
+        [HttpDelete("{Id:Guid}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> Delete([FromBody] DeleteDriverStory story)
         {
-            return await _mediator.Send(new DeleteDriverCommand() { Id = id });
+            var response = await _mediator.Send(story);
+
+            if (response == null)
+            {
+                return NotFound("Object not found");
+            }
+
+            return Ok(response);
         }
     }
 }

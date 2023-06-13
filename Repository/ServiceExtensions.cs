@@ -7,7 +7,7 @@ namespace Repository
     {
         public static void RegisterRepos(this IServiceCollection collection)
         {
-            collection.AddScoped(typeof(IRepository<>), typeof(ElectricCarParkRepository<>));
+            collection.AddScoped(typeof(IRepository), typeof(ElectricCarParkRepository));
         }
     }
 }

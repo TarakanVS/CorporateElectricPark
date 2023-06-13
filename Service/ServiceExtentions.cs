@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using MediatR;
-using System.Net.NetworkInformation;
+using Repository;
+
 
 namespace Services
 {
@@ -9,6 +9,9 @@ namespace Services
         public static IServiceCollection AddMediatR(this IServiceCollection services)
         {
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(ServiceExtensions).Assembly));
+            services
+                .AddAutoMapper(typeof(StoryAppMappingProfile))
+                .AddAutoMapper(typeof(BaseAppMappingProfile));
 
             return services;
         }

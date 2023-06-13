@@ -1,7 +1,7 @@
 ﻿using Domain.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Services.Commands.AdministratorCommands;
+using Services.Stories.AdministratorStories;
 
 namespace CorporateElectricPark.Controllers
 {
@@ -16,50 +16,70 @@ namespace CorporateElectricPark.Controllers
         }
 
         [HttpGet]
-        public async Task<List<Administrator>> GetAdministratorsListAsync()
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<Administrator>))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetList()
         {
-            var administrators = await _mediator.Send(new GetAdministratorsListCommand());
+            var story = new GetAdministratorsListStory();
 
-            return administrators;
+            var response = await _mediator.Send(story);
+
+            if (response.Count == 0)
+            {
+                return NotFound("Objects not found");
+            }
+
+            return Ok(response);
         }
 
-        [HttpGet("administratorId")]
-        public async Task<Administrator> GetAdministratorByIdAsync(Guid administratorId)
+        [HttpGet("{Id:Guid}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Administrator))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> Get([FromRoute] GetAdministratorByIdStory story)
         {
-            var administrator = await _mediator.Send(new GetAdministratorByIdCommand() { Id = administratorId });
+            var response = await _mediator.Send(story);
 
-            return administrator;
+            if (response == null)
+            {
+                return NotFound("Object not found");
+            }
+
+            return Ok(response);
         }
 
         [HttpPost]
-        public async Task<Administrator> AdministratoreateAdministratorAsync(Administrator administrator)
+        [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Post([FromBody] CreateAdministratorStory story)
         {
-            var newAdministrator = await _mediator.Send(new CreateAdministratorCommand(
-                administrator.Name,
-                administrator.PhoneNumber,
-                administrator.Password,
-                administrator.EmailAddress));
+            var response = await _mediator.Send(story);
 
-            return newAdministrator;
+            return Ok(response);
         }
 
         [HttpPut]
-        public async Task<Administrator> UpdateStudentAsync(Administrator administrator)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Put([FromBody] UpdateAdministratorStory story)
         {
-            var isAdministratorUpdated = await _mediator.Send(new UpdateAdministratorCommand(
-                administrator.Id,
-                administrator.Name,
-                administrator.PhoneNumber,
-                administrator.EmailAddress,
-                administrator.Password));
+            var response = await _mediator.Send(story);
 
-            return isAdministratorUpdated;
+            return Ok();
         }
 
-        [HttpDelete]
-        public async Task<Administrator> DeleteAdministratorAsync(Guid id)
+        [HttpDelete("{Id:Guid}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> Delete([FromBody] DeleteAdministratorStory story)
         {
-            return await _mediator.Send(new DeleteAdministratorCommand() { Id = id });
+            var response = await _mediator.Send(story);
+
+            if (response == null)
+            {
+                return NotFound("Object not found");
+            }
+
+            return Ok(response);
         }
     }
 }

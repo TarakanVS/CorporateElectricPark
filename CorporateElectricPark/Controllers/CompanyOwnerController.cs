@@ -1,7 +1,7 @@
 ﻿using Domain.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Services.Commands.CompanyOwnerCommands;
+using Services.Stories.CompanyOwnerStories;
 
 namespace CorporateElectricPark.Controllers
 {
@@ -16,50 +16,70 @@ namespace CorporateElectricPark.Controllers
         }
 
         [HttpGet]
-        public async Task<List<CompanyOwner>> GetCompaniesOwnersListAsync()
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<CompanyOwner>))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetList()
         {
-            var companiesOwners = await _mediator.Send(new GetCompaniesOwnersListCommand());
+            var story = new GetCompaniesOwnersListStory();
 
-            return companiesOwners;
+            var response = await _mediator.Send(story);
+
+            if (response.Count == 0)
+            {
+                return NotFound("Objects not found");
+            }
+
+            return Ok(response);
         }
 
-        [HttpGet("companyOwnerId")]
-        public async Task<CompanyOwner> GetCompanyOwnerByIdAsync(Guid companyOwnerId)
+        [HttpGet("{Id:Guid}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CompanyOwner))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> Get([FromRoute] GetCompanyOwnerByIdStory story)
         {
-            var companyOwner = await _mediator.Send(new GetCompanyOwnerByIdCommand() { Id = companyOwnerId });
+            var response = await _mediator.Send(story);
 
-            return companyOwner;
+            if (response == null)
+            {
+                return NotFound("Object not found");
+            }
+
+            return Ok(response);
         }
 
         [HttpPost]
-        public async Task<CompanyOwner> CompanyOwnereateCompanyOwnerAsync(CompanyOwner companyOwner)
+        [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Post([FromBody] CreateCompanyOwnerStory story)
         {
-            var newCompanyOwner = await _mediator.Send(new CreateCompanyOwnerCommand(
-                companyOwner.Name,
-                companyOwner.PhoneNumber,
-                companyOwner.Password,
-                companyOwner.EmailAddress));
+            var response = await _mediator.Send(story);
 
-            return newCompanyOwner;
+            return Ok(response);
         }
 
         [HttpPut]
-        public async Task<CompanyOwner> UpdateStudentAsync(CompanyOwner companyOwner)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Put([FromBody] UpdateCompanyOwnerStory story)
         {
-            var isCompanyOwnerUpdated = await _mediator.Send(new UpdateCompanyOwnerCommand(
-                companyOwner.Id,
-                companyOwner.Name,
-                companyOwner.PhoneNumber,
-                companyOwner.EmailAddress,
-                companyOwner.Password));
+            var response = await _mediator.Send(story);
 
-            return isCompanyOwnerUpdated;
+            return Ok();
         }
 
-        [HttpDelete]
-        public async Task<CompanyOwner> DeleteCompanyOwnerAsync(Guid id)
+        [HttpDelete("{Id:Guid}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> Delete([FromBody] DeleteCompanyOwnerStory story)
         {
-            return await _mediator.Send(new DeleteCompanyOwnerCommand() { Id = id });
+            var response = await _mediator.Send(story);
+
+            if (response == null)
+            {
+                return NotFound("Object not found");
+            }
+
+            return Ok(response);
         }
     }
 }

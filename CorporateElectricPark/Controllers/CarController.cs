@@ -1,7 +1,7 @@
 ﻿using Domain.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Services.Commands.CarCommands;
+using Services.Stories.CarStories;
 
 namespace CorporateElectricPark.Controllers
 {
@@ -16,55 +16,70 @@ namespace CorporateElectricPark.Controllers
         }
 
         [HttpGet]
-        public async Task<List<Car>> GetCarsListAsync()
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<Car>))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetList()
         {
-            var cars = await _mediator.Send(new GetCarsListCommand());
+            var story = new GetCarsListStory();
 
-            return cars;
+            var response = await _mediator.Send(story);
+
+            if (response.Count == 0)
+            {
+                return NotFound("Objects not found");
+            }
+
+            return Ok(response);
         }
 
-        [HttpGet("carId")]
-        public async Task<Car> GetCarByIdAsync(Guid carId)
+        [HttpGet("{Id:Guid}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Car))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> Get([FromRoute] GetCarByIdStory story)
         {
-            var car = await _mediator.Send(new GetCarByIdCommand() { Id = carId });
+            var response = await _mediator.Send(story);
 
-            return car;
+            if (response == null)
+            {
+                return NotFound("Object not found");
+            }
+
+            return Ok(response);
         }
 
         [HttpPost]
-        public async Task<Car> CareateCarAsync(Car car)
+        [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Post([FromBody] CreateCarStory story)
         {
-            var newCar = await _mediator.Send(new CreateCarCommand(
-                car.NumberPlate,
-                car.Model,
-                car.Tariff,
-                car.Mileage,
-                car.CompanyId,
-                car.DriverId,
-                car.CompanyId));
+            var response = await _mediator.Send(story);
 
-            return newCar;
+            return Ok(response);
         }
 
         [HttpPut]
-        public async Task<Car> UpdateStudentAsync(Car car)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Put([FromBody] UpdateCarStory story)
         {
-            var isCarUpdated = await _mediator.Send(new UpdateCarCommand(
-               car.Id,
-               car.NumberPlate,
-               car.Model,
-               car.Mileage,
-               car.Tariff,
-               car.DriverId, 
-               car.CompanyId));
+            var response = await _mediator.Send(story);
 
-            return isCarUpdated;
+            return Ok();
         }
 
-        [HttpDelete]
-        public async Task<Car> DeleteCarAsync(Guid id)
+        [HttpDelete("{Id:Guid}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> Delete([FromBody] DeleteCarStory story)
         {
-            return await _mediator.Send(new DeleteCarCommand() { Id = id });
+            var response = await _mediator.Send(story);
+
+            if (response == null)
+            {
+                return NotFound("Object not found");
+            }
+
+            return Ok(response);
         }
     }
 }

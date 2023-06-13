@@ -29,12 +29,6 @@ namespace Domain.Models
         [Column("driver_id")]
         public Guid DriverId { get; set; }
 
-        [Column("car_number_plate")]
-        public string CarNumberPlate { get; set; }
-
-        [Column("driver_phone_number")]
-        public string DriverPhoneNumber { get; set; }
-
         [Column("car_id")]
         public Guid CarId { get; set; }
     }
