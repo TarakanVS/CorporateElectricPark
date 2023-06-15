@@ -32,12 +32,12 @@ namespace Repository
             return entity;
         }
 
-        public async Task<TEntity> GetByPredicateAsync<TEntity>(Expression<Func<TEntity, bool>> predicate)
+        public async Task<List<TEntity>> GetByPredicateAsync<TEntity>(Expression<Func<TEntity, bool>> predicate)
             where TEntity : BaseEntity
         {
             var list = await _context.Set<TEntity>().Where(predicate).ToListAsync();
 
-            return list.FirstOrDefault();
+            return list;
         }
 
         public async Task<List<TEntity>> GetAllAsync<TEntity>()

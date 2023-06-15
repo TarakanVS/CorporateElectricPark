@@ -31,5 +31,7 @@ namespace Services.Stories.ChargeSessionStories
 
         public Guid DriverId { get; set; }
 
+        public Guid CompanyId { get; set; }
+
     }
 }

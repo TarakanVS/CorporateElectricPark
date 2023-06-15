@@ -30,7 +30,7 @@ namespace Repository.Migrations
                         .HasColumnName("id");
 
                     b.Property<DateTime>("AddedDate")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("added_date");
 
                     b.Property<string>("EmailAddress")
@@ -50,7 +50,7 @@ namespace Repository.Migrations
                         .HasColumnName("phone_number");
 
                     b.Property<DateTime>("UpdatedDate")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("update_date");
 
                     b.HasKey("Id");
@@ -66,7 +66,7 @@ namespace Repository.Migrations
                         .HasColumnName("id");
 
                     b.Property<DateTime>("AddedDate")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("added_date");
 
                     b.Property<Guid>("CompanyId")
@@ -94,15 +94,10 @@ namespace Repository.Migrations
                         .HasColumnName("tariff");
 
                     b.Property<DateTime>("UpdatedDate")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("update_date");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CompanyId");
-
-                    b.HasIndex("DriverId")
-                        .IsUnique();
 
                     b.ToTable("cars");
                 });
@@ -115,12 +110,16 @@ namespace Repository.Migrations
                         .HasColumnName("id");
 
                     b.Property<DateTime>("AddedDate")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("added_date");
 
                     b.Property<Guid>("CarId")
                         .HasColumnType("uuid")
                         .HasColumnName("car_id");
+
+                    b.Property<Guid>("CompanyId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("company_id");
 
                     b.Property<double>("Cost")
                         .HasColumnType("double precision")
@@ -143,7 +142,7 @@ namespace Repository.Migrations
                         .HasColumnName("energy_spent");
 
                     b.Property<DateTime>("FinishDateTime")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("finish_date_time");
 
                     b.Property<string>("SessionNumber")
@@ -151,18 +150,14 @@ namespace Repository.Migrations
                         .HasColumnName("session_number");
 
                     b.Property<DateTime>("StartDateTime")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("start_date_time");
 
                     b.Property<DateTime>("UpdatedDate")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("update_date");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CarId");
-
-                    b.HasIndex("DriverId");
 
                     b.ToTable("carge_sessions");
                 });
@@ -175,7 +170,7 @@ namespace Repository.Migrations
                         .HasColumnName("id");
 
                     b.Property<DateTime>("AddedDate")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("added_date");
 
                     b.Property<double>("Balance")
@@ -207,12 +202,10 @@ namespace Repository.Migrations
                         .HasColumnName("tariff");
 
                     b.Property<DateTime>("UpdatedDate")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("update_date");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CompanyOwnerId");
 
                     b.ToTable("companies");
                 });
@@ -225,7 +218,7 @@ namespace Repository.Migrations
                         .HasColumnName("id");
 
                     b.Property<DateTime>("AddedDate")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("added_date");
 
                     b.Property<string>("EmailAddress")
@@ -245,7 +238,7 @@ namespace Repository.Migrations
                         .HasColumnName("phone_number");
 
                     b.Property<DateTime>("UpdatedDate")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("update_date");
 
                     b.HasKey("Id");
@@ -261,7 +254,7 @@ namespace Repository.Migrations
                         .HasColumnName("id");
 
                     b.Property<DateTime>("AddedDate")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("added_date");
 
                     b.Property<Guid>("CarId")
@@ -285,104 +278,12 @@ namespace Repository.Migrations
                         .HasColumnName("phone_number");
 
                     b.Property<DateTime>("UpdatedDate")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("update_date");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CompanyId");
-
                     b.ToTable("drivers");
-                });
-
-            modelBuilder.Entity("Domain.Models.Car", b =>
-                {
-                    b.HasOne("Domain.Models.Company", "Company")
-                        .WithMany("Cars")
-                        .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired()
-                        .HasConstraintName("FK_Car_Company");
-
-                    b.HasOne("Domain.Models.Driver", "Driver")
-                        .WithOne("Car")
-                        .HasForeignKey("Domain.Models.Car", "DriverId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Company");
-
-                    b.Navigation("Driver");
-                });
-
-            modelBuilder.Entity("Domain.Models.ChargeSession", b =>
-                {
-                    b.HasOne("Domain.Models.Car", "Car")
-                        .WithMany("ChargeSessions")
-                        .HasForeignKey("CarId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired()
-                        .HasConstraintName("FK_Car_ChargeSession");
-
-                    b.HasOne("Domain.Models.Driver", "Driver")
-                        .WithMany("ChargeSessions")
-                        .HasForeignKey("DriverId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired()
-                        .HasConstraintName("FK_Driver_ChargeSession");
-
-                    b.Navigation("Car");
-
-                    b.Navigation("Driver");
-                });
-
-            modelBuilder.Entity("Domain.Models.Company", b =>
-                {
-                    b.HasOne("Domain.Models.CompanyOwner", "CompanyOwner")
-                        .WithMany("Companies")
-                        .HasForeignKey("CompanyOwnerId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired()
-                        .HasConstraintName("FK_CompanyOwner_Company");
-
-                    b.Navigation("CompanyOwner");
-                });
-
-            modelBuilder.Entity("Domain.Models.Driver", b =>
-                {
-                    b.HasOne("Domain.Models.Company", "Company")
-                        .WithMany("Drivers")
-                        .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired()
-                        .HasConstraintName("FK_Driver_Company");
-
-                    b.Navigation("Company");
-                });
-
-            modelBuilder.Entity("Domain.Models.Car", b =>
-                {
-                    b.Navigation("ChargeSessions");
-                });
-
-            modelBuilder.Entity("Domain.Models.Company", b =>
-                {
-                    b.Navigation("Cars");
-
-                    b.Navigation("Drivers");
-                });
-
-            modelBuilder.Entity("Domain.Models.CompanyOwner", b =>
-                {
-                    b.Navigation("Companies");
-                });
-
-            modelBuilder.Entity("Domain.Models.Driver", b =>
-                {
-                    b.Navigation("Car")
-                        .IsRequired();
-
-                    b.Navigation("ChargeSessions");
                 });
 #pragma warning restore 612, 618
         }

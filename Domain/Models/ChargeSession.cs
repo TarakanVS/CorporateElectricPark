@@ -31,5 +31,8 @@ namespace Domain.Models
 
         [Column("car_id")]
         public Guid CarId { get; set; }
+
+        [Column("company_id")]
+        public Guid CompanyId { get; set; }
     }
 }

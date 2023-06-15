@@ -34,5 +34,8 @@ namespace Services.Stories.ChargeSessionStories
 
         [Required(ErrorMessage = "Field can't be empty")]
         public Guid DriverId { get; set; }
+
+        [Required(ErrorMessage = "Field can't be empty")]
+        public Guid CompanyId { get; set; }
     }
 }

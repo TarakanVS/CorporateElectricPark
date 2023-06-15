@@ -20,8 +20,13 @@ namespace Services.Stories.ServiceStories
         public async Task<bool> Handle(AddChargeSessionStory story, CancellationToken cancellationToken)
         {
             var chargeSession = new ChargeSession();
-            var car = await _repository.GetByPredicateAsync<Car>(x => x.NumberPlate == story.CarNumberPlate);
-            var driver = await _repository.GetByPredicateAsync<Driver>(x => x.PhoneNumber == story.DriverPhoneNumber);
+            var car = (await _repository.GetByPredicateAsync<Car>(x => x.NumberPlate == story.CarNumberPlate)).FirstOrDefault();
+            var driver = (await _repository.GetByPredicateAsync<Driver>(x => x.PhoneNumber == story.DriverPhoneNumber)).FirstOrDefault();
+
+            if (car == null || driver == null)
+            {
+                return false;
+            }
 
             chargeSession.SessionNumber = story.SessionNumber;
             chargeSession.DriverId = driver.Id;
@@ -35,6 +40,8 @@ namespace Services.Stories.ServiceStories
             {
                 return false;
             }
+
+            chargeSession.CompanyId = driver.CompanyId;
 
             var company = await _repository.GetByIdAsync<Company>(driver.CompanyId);
             double tariff;

@@ -11,7 +11,7 @@ namespace Repository
         Task<TEntity> GetByIdAsync<TEntity>(Guid id) 
             where TEntity : BaseEntity;
 
-        public Task<TEntity> GetByPredicateAsync<TEntity>(Expression<Func<TEntity, bool>> predicate)
+        public Task<List<TEntity>> GetByPredicateAsync<TEntity>(Expression<Func<TEntity, bool>> predicate)
             where TEntity : BaseEntity;
 
         Task<TEntity> InsertAsync<TEntity>(TEntity entity) 

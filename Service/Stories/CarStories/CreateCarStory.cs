@@ -26,7 +26,5 @@ namespace Services.Stories.CarStories
 
         [Required(ErrorMessage = "Field can't be empty")]
         public Guid CompanyId { get; set; }
-
-        
     }
 }

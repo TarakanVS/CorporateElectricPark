@@ -19,8 +19,8 @@ namespace Services.Stories.ServiceStories
 
         public async Task<bool> Handle(AddChargeSessionStory story, CancellationToken cancellationToken)
         {
-            var car = await _repository.GetByPredicateAsync<Car>(x => x.NumberPlate == story.CarNumberPlate);
-            var driver = await _repository.GetByPredicateAsync<Driver>(x => x.PhoneNumber == story.DriverPhoneNumber);
+            var car = (await _repository.GetByPredicateAsync<Car>(x => x.NumberPlate == story.CarNumberPlate)).FirstOrDefault();
+            var driver =(await _repository.GetByPredicateAsync<Driver>(x => x.PhoneNumber == story.DriverPhoneNumber)).FirstOrDefault();
 
             if (car == null  || driver == null)
             {

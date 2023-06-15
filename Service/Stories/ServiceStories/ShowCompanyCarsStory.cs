@@ -2,11 +2,11 @@
 using MediatR;
 using System.ComponentModel.DataAnnotations;
 
-namespace Services.Stories.ChargeSessionStories
+namespace Services.Stories.ServiceStories
 {
-    public class DeleteChargeSessionStory : IRequest<bool>
+    public class ShowCompanyCarsStory : IRequest<List<Car>>
     {
         [Required(ErrorMessage = "Field can't be empty")]
-        public Guid Id { get; set; }
+        public Guid CompanyId { get; set; }
     }
 }
